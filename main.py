@@ -137,6 +137,8 @@ def main():
 
     if not st.session_state.username_set:
         st.write("### Welcome! Set your username to get started.")
+        st.write("All messages sent and recieved on this platform are hosted on a open-source cloud server so do not send anything that is private or confidential")
+        
         username_input = st.text_input("Enter your username:", key="initial_username_input")
         if st.button("Set Username", key="set_username_button"):
             if username_input:

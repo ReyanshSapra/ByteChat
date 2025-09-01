@@ -76,54 +76,66 @@ def _send_message_callback():
         st.session_state.message_input = "" 
 
 def main():
-    st.set_page_config(page_title="ByteChat", page_icon="💬", layout="centered")
+    st.set_page_config(page_title="Chatty Bro", page_icon="💬", layout="centered")
 
     st.markdown("""
 <style>
 .stApp {
-    background-color: #07e9ed;
-    font-family: 'Arial', sans-serif;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
 }
 .stTextInput > div > div > input {
-    background-color: #ffffff;
-    color: #000000;
-    border-radius: 5px;
-    border: 1px solid #cccccc;
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border-radius: 10px;
+    border: 1px solid #444444;
 }
 .stButton > button {
     background-color: #007bff;
     color: white;
-    border-radius: 5px;
+    border-radius: 10px;
     border: none;
     padding: 10px 24px;
-    transition: all 0.05s ease;
+    transition: all 0.2s ease;
+    font-weight: bold;
 }
 .stButton > button:hover {
     background-color: #0056b3;
 }
+h1, h2, h3 {
+    color: #f0f0f0;
+}
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .chat-message {
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: inline-block;
-    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    max-width: 80%;
+    word-wrap: break-word;
 }
 .user-message {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
     float: right;
+    margin-left: 20%;
 }
 .other-message {
-    background-color: #e9ecef;
-    color: #1b1e21;
-    border: 1px solid #d6d8db;
+    background-color: #333333;
+    color: #f0f0f0;
+    align-self: flex-start;
     float: left;
+    margin-right: 20%;
 }
 </style>
 """, unsafe_allow_html=True)
 
-    st.title("ByteChat")
+    st.title("ByteChat 💬")
 
     # Initialize session state variables
     if 'username_set' not in st.session_state:
@@ -137,8 +149,6 @@ def main():
 
     if not st.session_state.username_set:
         st.write("### Welcome! Set your username to get started.")
-        st.write("All messages sent and recieved on this platform are hosted on a open-source cloud server so do not send anything that is private or confidential")
-        
         username_input = st.text_input("Enter your username:", key="initial_username_input")
         if st.button("Set Username", key="set_username_button"):
             if username_input:
@@ -148,14 +158,17 @@ def main():
             else:
                 st.warning("Please enter a username.")
     else:
-        st.write(f"Hello, {st.session_state.username}!")
+        st.write(f"Hello, **{st.session_state.username}**!")
 
         if not st.session_state.group_id:
             st.write("---")
             st.write("### Join or Create a Chat Group")
+            
+            # Text input above the buttons
+            group_id_input = st.text_input("Enter group code to join:", key="group_code_input")
+
             col1, col2 = st.columns(2)
             with col1:
-                group_id_input = st.text_input("Enter group code to join:", key="group_code_input")
                 if st.button("Join Group", key="join_group_button"):
                     if group_id_input:
                         if join_group(group_id_input):
@@ -176,7 +189,6 @@ def main():
             st.write("---")
             st.write(f"## Live Chat in Group: **{st.session_state.group_id}**")
 
-
             chat_container = st.container()
             with chat_container:
                 messages = get_messages(st.session_state.group_id)
@@ -186,7 +198,8 @@ def main():
                     else:
                         st.markdown(f"<div class='chat-message other-message'><b>{msg['username']}:</b> {msg['message']}</div>", unsafe_allow_html=True)
 
-     
+            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+
             st.text_input(
                 "Type your message:",
                 key="message_input",
@@ -194,11 +207,9 @@ def main():
                 value=st.session_state.message_input 
             )
 
-
             if st.button("Send", key="send_button"):
                 _send_message_callback() 
 
- 
             time.sleep(1) 
             st.rerun() 
 

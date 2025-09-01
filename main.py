@@ -76,7 +76,7 @@ def _send_message_callback():
         st.session_state.message_input = "" 
 
 def main():
-    st.set_page_config(page_title="Chatty Bro", page_icon="💬", layout="centered")
+    st.set_page_config(page_title="PingPost", page_icon="💬", layout="centered")
 
     st.markdown("""
 <style>
@@ -135,7 +135,7 @@ h1, h2, h3 {
 </style>
 """, unsafe_allow_html=True)
 
-    st.title("ByteChat 💬")
+    st.title("PingPost 💬")
 
     # Initialize session state variables
     if 'username_set' not in st.session_state:

@@ -14,7 +14,7 @@ minio_client = Minio(
     secure=True
 )
 
-BUCKET_NAME = "group-chat-app"
+BUCKET_NAME = "pingpost"
 
 def initialize_bucket():
     try:
